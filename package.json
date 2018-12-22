@@ -3,13 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack && sh ./FIX.sh"
+  },
   "dependencies": {
     "@types/marked": "^0.5.0",
-    "@types/node": "^10.12.18",
-    "marked": "^0.5.2"
+    "lodash": "^4.17.11",
+    "marked": "^0.5.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.0",
+    "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2"
+  },
+  "deno": {
+    "marked": "./deno_modules/marked.js",
+    "lodash": "./deno_modules/lodash.js",
+    "./src/example.js": "./deno_modules/example.js"
   }
 }

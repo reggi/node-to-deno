@@ -1,33 +1,40 @@
-const path = require('path');
+const { zipObject } = require('lodash');
+const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack')
+const pkg = require('./package.json')
+
+const entry = {
+  ...pkg.deno,
+  "path-browserify": "./deno_modules/path.js",
+}
+
+const hoist = (key, dep) => {
+  const data = {
+    import: `import ${key} from '${dep}'`,
+    assignment: key
+  }
+  return `${key};\n// hoist-for-deno-webpack: import ${key} from '${dep}'`
+}
 
 module.exports = {
-  mode: "production",
-  entry: "./node/example.js",
-  node: {
-    console: true,
-    global: true,
-    process: true,
-    __filename: true,
-    __dirname: true,
-    Buffer: true,
-    setImmediate: true,
-  },
+  entry: zipObject(Object.values(entry), Object.keys(entry)),
+  mode: "none",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'example.js',
+    filename: '[name]',
+    path: __dirname,
     libraryTarget: 'commonjs-module'
   },
-  resolve: {
-    // options for resolving module requests
-    // (does not apply to resolving to loaders)
-    modules: [
-      "node_modules",
-      path.resolve(__dirname, "app")
-    ],
-    // directories where to look for modules
-    extensions: [".js", ".ts", ".jsx", ".css"],
+  externals: [nodeExternals()],
+  externals: {
+    "path": hoist('path', './path'),
   },
-  
-  target: "node", // enum  // the environment in which the bundle should run
-    
+  resolve: {
+    extensions: [".js"],
+  },
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: '// @ts-nocheck',
+      raw: true
+    }),
+  ]
 }

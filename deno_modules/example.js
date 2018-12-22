@@ -1,4 +1,6 @@
-module.exports =
+import path from './path';
+// @ts-nocheck
+export default
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,16 +84,26 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+const path = __webpack_require__(5);
+
+module.exports = path.join('this', 'is', 'a', 'node', 'file');
+
+/***/ }),
+
+/***/ 5:
 /***/ (function(module, exports) {
 
-module.exports = function() {
-  return 'hello world';
-}
+module.exports = path;
+// hoist-for-deno-webpack: import path from './path';
 
 /***/ })
-/******/ ]);
+
+/******/ });
